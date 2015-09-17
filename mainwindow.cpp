@@ -2,6 +2,7 @@
 #include "ui_mainwindow.h"
 #include<QDebug>
 #include<QtCore>
+#include "modbusmanager.h"
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)

@@ -1,14 +1,15 @@
-#include "ztool.h"
+#include "ztools.h"
 #include<QEventLoop>
 #include<QTimer>
 #include<ctype.h>
 #include<QFile>
-ZTool::ZTool()
+#include<unistd.h>
+ZTools::ZTools()
 {
 }
-QByteArray ZTool::readLineFromFile(QString& fileName,int lineNo)
+QByteArray ZTools::readLineFromFile(const QString& fileName,int lineNo)
 {
-    QFile f(fileName);
+	QFile f(fileName);
     QByteArray line;
     f.open(QFile::ReadOnly);
     while(!f.atEnd()&&lineNo--)
@@ -18,7 +19,7 @@ QByteArray ZTool::readLineFromFile(QString& fileName,int lineNo)
     else
         return line;
 }
-char* ZTool::hex2ascii(int hex,char *ascii,int len)
+char* ZTools::hex2ascii(int hex,char *ascii,int len)
 {
     char* _ascii = ascii;
     while(len--)
@@ -30,16 +31,14 @@ char* ZTool::hex2ascii(int hex,char *ascii,int len)
 //    int h;
 //    while(len--)
 //        ascii++ = (h = ((hex >> (len << 2))&0x0f)) > 9?h - 10 +'a':h + '0';
-quint64 ZTool::ascii2hex(const char *ascii,int len)
+quint64 ZTools::ascii2hex(const char *ascii,int len)
 {
     quint64 hex = 0;
     while(len--)
         hex |=  isdigit(*ascii)?quint64(*ascii++ -'0')<<(len<<2):isalpha(*ascii)?quint64(tolower(*ascii++)-'a'+10)<<(len<<2):0<<(len<<2);
     return hex;
 }
-void ZTool::msleep(int ms)
+void ZTools::msleep(int msecs)
 {
-    QEventLoop q;
-    QTimer::singleShot(ms,&q,SLOT(quit()));
-    q.exec();
+    usleep(msecs * 1000);
 }

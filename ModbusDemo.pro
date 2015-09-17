@@ -5,20 +5,18 @@
 #-------------------------------------------------
 
 QT       += core gui
-include(qextserialport/src/qextserialport.pri)
+
+
+include(ModbusManager/ModbusManager.pri)
 TARGET = ModbusDemo
 TEMPLATE = app
 
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    modbusmanager.cpp \
-    ztool.cpp \
     mythread.cpp
 
 HEADERS  += mainwindow.h \
-    modbusmanager.h \
-    ztool.h \
     mythread.h
 
 FORMS    += mainwindow.ui
