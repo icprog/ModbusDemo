@@ -98,11 +98,9 @@ void Modbus::print()
     {
         qDebug(" %x ",datList[i]);
     }
-    qDebug("\n");
     qDebug("rawData  :");
     for(int i = 0;i < rawData.length();i++)
     {
         qDebug(" %2x ",(char)rawData[i]);
     }
-    qDebug("\n");
 }

@@ -47,7 +47,7 @@ public:
     };
     Modbus* getOneModbus();//返回动态生成对象 ，使用后要delete  失败返回NULL
     Modbus* WaitOneModbus(int timeout = 300);//failed return NULL
-    void SendOneModbus(Modbus& ac,int ms = 0);
+    void SendOneModbus(Modbus& ac);
 
     ModbusManager(const QString& devName,int  dirIO = 0,QueryMode mode = EventDriven);
     bool open();

@@ -13,18 +13,24 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp \
-    mythread.cpp
+        mainwindow.cpp
 
-HEADERS  += mainwindow.h \
-    mythread.h
+HEADERS  += mainwindow.h
 
 FORMS    += mainwindow.ui
 
 
 
-DEFINES += ARM
-#DEFINES += X86
+
+DEFINES += $$(ARCH)
+contains( DEFINES,arm ) {
+    DEFINES += ARM
+}
+DEFINES += ARCH
+!contains( DEFINES,arm ) {
+    DEFINES += X86
+}
+
 
 
 

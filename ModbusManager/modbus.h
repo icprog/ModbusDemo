@@ -30,7 +30,7 @@ public:
     Modbus();
     void generate();
     explicit Modbus(QByteArray pkg){load(pkg);}
-    void addDat(int dat){datList.append(dat);}
+    void addDat(int dat){datList.append(dat);datCount = datList.length();}
     void print();
 
 };

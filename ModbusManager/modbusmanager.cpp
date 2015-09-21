@@ -18,7 +18,7 @@ static void QextSerialPort_init(QextSerialPort *port)
     port->setDtr(false);
     port->setBaudRate(BAUD19200);
     port->setFlowControl(FLOW_OFF);
-    port->setParity(PAR_NONE);
+    port->setParity(PAR_EVEN);
     port->setDataBits(DATA_8);
     port->setStopBits(STOP_1);
     port->setTimeout(300);
@@ -140,12 +140,17 @@ Modbus* ModbusManager::WaitOneModbus(int msecs)
     resMb = getOneModbus();
     return resMb;
 }
-void ModbusManager::SendOneModbus(Modbus& mb,int ms)
+void ModbusManager::SendOneModbus(Modbus& mb)
 {
-    setDirection(1);
     mb.generate();
+    setDirection(1);
+
     serial->write(mb.rawData);
-    ZTools::msleep(ms);
+    int bpf = 0;//bit per byte frame
+    int startBits = 1;
+    bpf = serial->dataBits() + startBits+ (serial->stopBits() == STOP_1?1:2) + (serial->parity() == PAR_NONE ? 0:1);
+    int delay = bpf * 1000 * mb.rawData.length() /serial->baudRate() + 2;
+    ZTools::msleep(delay);
     setDirection(0);
 
 }

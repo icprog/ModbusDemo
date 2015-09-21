@@ -8,9 +8,19 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    modbus = new ModbusManager("/dev/ttyUSB1",4);
-    modbus->open();
-    connect(modbus,SIGNAL(readyRead()),this,SLOT(fun()));
+    modbusManager = new ModbusManager("/dev/ttyUSB1",4);
+    modbusManager->open();
+    connect(modbusManager,SIGNAL(readyRead()),this,SLOT(fun()));
+    Modbus ac;
+    ac.addr = 1;
+    ac.code = 0X10;
+    ac.regAddr = 4;
+    ac.addDat(1);
+    ac.addDat(0);
+    ac.addDat(0);
+    ac.addDat(0x3221);
+    modbusManager->SendOneModbus(ac);
+    ac.print();
 }
 
 MainWindow::~MainWindow()
@@ -22,9 +32,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::fun()
 {
-
-    qDebug()<<"1111111111111111";
-    Modbus *mb = modbus->getOneModbus();
+    Modbus *mb = modbusManager->getOneModbus();
     mb->print();
     delete mb;
 
@@ -33,9 +41,28 @@ void MainWindow::fun()
     ac.code = 3;
     ac.regAddr = 0;
     ac.datCount = 1;
-    ac.generate();
-    modbus->SendOneModbus(ac,(int)(119200.0/11/1000*ac.rawData.length()));
-
+    modbusManager->SendOneModbus(ac);
+    if(false)
+    {
+        disconnect(modbusManager,SIGNAL(readyRead()),this,SLOT(fun()));
+        int tryCnt = 3;
+        while(tryCnt--)
+        {
+            Modbus* _ac = modbusManager->WaitOneModbus(300);
+            if(_ac == NULL)
+            {
+//            globalInfo->carNu = -1;
+                //空调控制器异常
+            }
+            else
+            {
+//             globalInfo->carNu = _ac->datList[0];
+                delete _ac;
+                break;
+            }
+        }
+    }
 
 
 }
+
