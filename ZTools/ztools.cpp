@@ -4,6 +4,8 @@
 #include<ctype.h>
 #include<QFile>
 #include<unistd.h>
+#include<QNetworkInterface>
+#include<QStringList>
 ZTools::ZTools()
 {
 }
@@ -41,4 +43,17 @@ quint64 ZTools::ascii2hex(const char *ascii,int len)
 void ZTools::msleep(int msecs)
 {
     usleep(msecs * 1000);
+}
+int ZTools::getCarID()
+{
+    QList<QHostAddress> list = QNetworkInterface::allAddresses();
+    foreach(QHostAddress address,list)
+    {
+        QString ip = address.toString();
+        if(ip.startsWith("192.168."))
+        {
+            return ip.split(QChar('.'))[2].toInt();
+        }
+    }
+    return 0;
 }

@@ -6,8 +6,9 @@
 
 QT       += core gui
 
-
+include(qextserialport/src/qextserialport.pri)
 include(ModbusManager/ModbusManager.pri)
+include(ZTools/ZTools.pri)
 TARGET = ModbusDemo
 TEMPLATE = app
 
@@ -24,22 +25,8 @@ FORMS    += mainwindow.ui
 
 DEFINES += $$(ARCH)
 contains( DEFINES,arm ) {
-    DEFINES += ARM
+    mytarget.commands = scp ./${TARGET} root@192.168.1.30:/
 }
-DEFINES += ARCH
-!contains( DEFINES,arm ) {
-    DEFINES += X86
-}
-
-
-
-
-contains( DEFINES, ARM ) {
-
-
-    mytarget.commands = scp ./${TARGET} root@192.168.1.243:/
-}
-
 
 mytarget.target = a
 

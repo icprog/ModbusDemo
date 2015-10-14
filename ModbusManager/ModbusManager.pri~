@@ -1,5 +1,6 @@
 INCLUDEPATH += $$PWD
 DEPENDPATH += $$PWD
+include(qextserialport/src/qextserialport.pri)
 HEADERS += \
     ModbusManager/modbusmanager.h \
     ModbusManager/modbus.h
